@@ -37,7 +37,7 @@ npmswitch list
   work      bob    @acme @tools
 ```
 
-Without `npm link`, run `node src/cli.js` in place of `npmswitch`.
+Without `npm link`, run `node src/cli.js` in place of `npmswitch`. From npm, `npm install -g @apicartops/npmswitch` installs the same `npmswitch` command (the package is scoped because npm rejects `npmswitch` as too similar to an existing package).
 
 `add` asks for the token at a hidden prompt (or reads it from an env var with `--token-env=VAR`), checks it against the registry and stores the username. Tokens are never passed on the command line, never printed, and never returned by any tool. They are stored in `~/.npmswitch/accounts.json` (file mode 600).
 
@@ -70,7 +70,7 @@ npmswitch config hermes          # print the snippet instead of editing anything
 | Zed | `zed` | prints a snippet for `settings.json` |
 | anything else | `generic` | prints the standard `mcpServers` JSON |
 
-Config locations differ between versions of these tools, so check the printed path if an agent does not pick it up. Use `--npx` to register `npx -y npmswitch mcp` instead of a path to this checkout (once published), and `--name=NAME` to use a different server name.
+Config locations differ between versions of these tools, so check the printed path if an agent does not pick it up. Use `--npx` to register `npx -y @apicartops/npmswitch mcp` instead of a path to this checkout (once published), and `--name=NAME` to use a different server name.
 
 ### Project instructions
 

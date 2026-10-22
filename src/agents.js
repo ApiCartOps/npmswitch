@@ -45,7 +45,7 @@ export const AGENTS = {
 };
 
 export function serverCommand({ npx = false } = {}) {
-  if (npx) return { command: "npx", args: ["-y", "npmswitch", "mcp"] };
+  if (npx) return { command: "npx", args: ["-y", "@apicartops/npmswitch", "mcp"] };
   return { command: "node", args: [path.resolve(contentDir, "..", "src", "cli.js"), "mcp"] };
 }
 

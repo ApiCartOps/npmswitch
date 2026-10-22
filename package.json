@@ -1,5 +1,5 @@
 {
-  "name": "npmswitch",
+  "name": "@apicartops/npmswitch",
   "version": "0.1.0",
   "description": "One MCP server, every npm account. Routes each call to the right token for Claude, Cursor, Copilot, Codex, Gemini, Windsurf, Hermes and more.",
   "type": "module",
@@ -41,5 +41,8 @@
     "content",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }

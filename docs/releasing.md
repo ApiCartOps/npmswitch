@@ -19,7 +19,7 @@ npm only lets you configure a trusted publisher for a package that already exist
 
 After the package exists, switch publishing to trusted publishing (OIDC). No npm token is stored in GitHub and 2FA never has to be bypassed.
 
-1. Open <https://www.npmjs.com/package/npmswitch/access>.
+1. Open <https://www.npmjs.com/package/@apicartops/npmswitch/access>.
 2. Under **Trusted Publisher**, choose **GitHub Actions** and enter:
    - Organization or user: `ApiCartOps`
    - Repository: `npmswitch`
@@ -49,5 +49,5 @@ If you rename the repository, update the trusted publisher entry to match.
 ## If something goes wrong
 
 - Publish fails with an authentication error: the trusted publisher entry is missing or does not match the repo and workflow filename exactly.
-- A version was published by mistake: npm never lets a version number be reused. Publish a fixed patch release and, if needed, run `npm deprecate npmswitch@<bad version> "reason"` (or use the `npm_deprecate` tool).
+- A version was published by mistake: npm never lets a version number be reused. Publish a fixed patch release and, if needed, run `npm deprecate @apicartops/npmswitch@<bad version> "reason"` (or use the `npm_deprecate` tool).
 - Release notes are wrong: edit the release on GitHub; the workflow will not overwrite an existing release.
