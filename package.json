@@ -1,0 +1,45 @@
+{
+  "name": "npmswitch",
+  "version": "0.1.0",
+  "description": "One MCP server, every npm account. Routes each call to the right token for Claude, Cursor, Copilot, Codex, Gemini, Windsurf, Hermes and more.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "npmswitch": "src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "semver": "^7.6.0",
+    "zod": "^3.23.0"
+  },
+  "scripts": {
+    "test": "node test/smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApiCartOps/npmswitch.git"
+  },
+  "keywords": [
+    "mcp",
+    "npm",
+    "multi-account",
+    "registry",
+    "claude",
+    "cursor",
+    "copilot",
+    "codex",
+    "gemini",
+    "windsurf",
+    "hermes",
+    "agents"
+  ],
+  "files": [
+    "src",
+    "content",
+    "README.md",
+    "LICENSE"
+  ]
+}
