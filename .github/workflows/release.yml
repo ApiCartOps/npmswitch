@@ -1,0 +1,73 @@
+name: Release
+
+# Push a tag like v0.3.0 (see docs/releasing.md). The tag must match the version in package.json.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Tag must match package.json
+        run: |
+          V=$(node -p "require('./package.json').version")
+          if [ "${GITHUB_REF_NAME}" != "v${V}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match package.json version v${V}"; exit 1
+          fi
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC) and provenance; no npm token is stored
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Use an npm that supports trusted publishing
+        run: npm install -g npm@^11.5.1
+      - run: npm ci
+      - name: Publish (skipped if this version is already on npm)
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          V=$(node -p "require('./package.json').version")
+          if npm view "${NAME}@${V}" version >/dev/null 2>&1; then
+            echo "${NAME}@${V} is already published; nothing to do."
+          else
+            npm publish --provenance --access public
+          fi
+
+  github-release:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create the GitHub release (notes from CHANGELOG.md, else generated)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V="${GITHUB_REF_NAME#v}"
+          awk -v v="$V" 'index($0, "## [" v "]") == 1 {f=1; next} /^## \[/ {f=0} f' CHANGELOG.md > notes.md || true
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists."
+          elif [ -s notes.md ]; then
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+          fi
